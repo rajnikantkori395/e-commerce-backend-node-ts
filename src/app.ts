@@ -9,7 +9,8 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productsRoutes";
 import cartRoutes from "./routes/cartRoutes";
-
+import paymentRoutes from "./routes/payments";
+import orderRoutes from "./routes/orders";
 const app = express();
 
 mongoose
@@ -44,6 +45,8 @@ app.use(morgan("combined"));
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/payment", paymentRoutes);
 
 // Error Handling Middleware
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
