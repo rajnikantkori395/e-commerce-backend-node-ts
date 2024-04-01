@@ -7,6 +7,7 @@ import config from "../config";
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, email, password } = req.body;
+    console.log(req.body);
 
     // Check if user with email already exists
     const existingUser = await User.findOne({ email });
@@ -57,8 +58,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
 export const signout = async (req: Request, res: Response): Promise<void> => {
-    // Simply send a response, no further action needed on server
-    res.json({ message: 'Signout successful' });
-  };
+  // Simply send a response, no further action needed on server
+  res.json({ message: "Signout successful" });
+};

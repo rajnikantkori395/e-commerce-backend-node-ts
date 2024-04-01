@@ -1,13 +1,29 @@
 import express, { Request, Response, NextFunction } from "express";
+import "dotenv/config";
 import mongoose from "mongoose";
 import config from "./config";
-import authRoutes from "./routes/authRoutes";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import cors from "cors";
+import authRoutes from "./routes/authRoutes";
+import productRoutes from "./routes/productsRoutes";
+import cartRoutes from "./routes/cartRoutes";
 
 const app = express();
+
+mongoose
+  .connect(config.mongoURI)
+  .then(() => {
+    console.log("MongoDB Connected");
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB Connection Error:", err);
+  });
 
 // Middleware
 app.use(helmet());
@@ -26,6 +42,8 @@ app.use(morgan("combined"));
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Error Handling Middleware
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
@@ -34,16 +52,3 @@ const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
 };
 app.use(errorHandler);
 console.log("hello");
-
-
-mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true } as any)
-  .then(() => {
-    console.log('MongoDB Connected');
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('MongoDB Connection Error:', err);
-  });
