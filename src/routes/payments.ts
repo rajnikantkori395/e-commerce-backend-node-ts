@@ -7,3 +7,4 @@ const router = express.Router();
 router.post('/payment-intents', authenticateToken, createPaymentIntent);
 
 export default router;
+    
